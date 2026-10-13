@@ -1,0 +1,2 @@
+kind: generic
+description: The GitHub release publisher for daukle. It uploads files a toolchain built as assets on a GitHub release, through a gh it provisions and pins by sha256, so a project needs no publishing plugin, no gh on the host and no token in any file.
