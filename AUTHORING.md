@@ -8,10 +8,12 @@ renders.
 
 **The publishing spec says a chunk "may declare a publisher beside a toolchain, or beside a source
 plugin". The second half is false in core**, measured 2026-10-13 at
-`src/config/config_declare.c:145-152`: `lua_declare_source` refuses outright when the chunk declares
+`src/config/config_declare.c:136-142`: `lua_declare_source` refuses outright when the chunk declares
 `exec` or `provision`, with `daukle.exec is available only to a toolchain or publisher plugin`. A
-publisher must exec, because core can neither POST nor PUT, so `daukle/github` could not host this
-and a coordinate is one `plugin.lua` per repository.
+publisher must exec, because core can neither POST nor PUT, so `daukle/github`'s chunk could not host
+this. A second chunk in that repository was possible, as `daukle/cmake`'s `deps.lua` is, and was
+declined because every consumer would need a second resolver block. Core is changing the rule
+itself (`D-133`), after which the publisher may share `daukle/github`'s chunk.
 
 ## The capability grant is one deliberate omission
 
