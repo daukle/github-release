@@ -6,14 +6,13 @@ renders.
 
 ## Why this is its own repository
 
-**The publishing spec says a chunk "may declare a publisher beside a toolchain, or beside a source
-plugin". The second half is false in core**, measured 2026-10-13 at
-`src/config/config_declare.c:136-142`: `lua_declare_source` refuses outright when the chunk declares
-`exec` or `provision`, with `daukle.exec is available only to a toolchain or publisher plugin`. A
-publisher must exec, because core can neither POST nor PUT, so `daukle/github`'s chunk could not host
-this. A second chunk in that repository was possible, as `daukle/cmake`'s `deps.lua` is, and was
-declined because every consumer would need a second resolver block. Core is changing the rule
-itself (`D-133`), after which the publisher may share `daukle/github`'s chunk.
+**Because a source could not share a chunk with `exec` when this was built.** Until `daukle 0.8.0`,
+`lua_declare_source` refused any chunk declaring `exec` or `provision`, and a publisher must exec,
+because core can neither POST nor PUT, so `daukle/github`'s chunk could not host this. A second chunk
+in that repository was possible, as `daukle/cmake`'s `deps.lua` is, and was declined because every
+consumer would need a second resolver block. **`daukle 0.8.0` lifted the rule** (`D-133`, plugin
+api 2): a chunk may hold a source and a publisher, and only the source's `load` is refused `exec`.
+Moving this publisher into `daukle/github` retires this repository and has not been decided.
 
 ## The capability grant is one deliberate omission
 
